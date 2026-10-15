@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>교육사진 증빙 PDF · 다윈서비스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: 한 줄 세로 흐름(설정 → 과목별 사진 → 미리보기) + 하단 고정 저장 바. 출력 양식 색(증빙서식 파랑)을 그대로 UI 강조색으로 씀 */
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --fg:#16202B; --muted:#5D6B7A; --line:#DCE3EB;
+  --accent:#1F6FC5; --accent-ink:#FFFFFF; --accent-soft:#E6F0FA; --danger:#C2412D;
+  --sheet:#FFFFFF;
+  --f-ui:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151C; --surface:#18202A; --fg:#E7EDF4; --muted:#93A2B3; --line:#2A3542;
+  --accent:#5AA2EE; --accent-ink:#0B1622; --accent-soft:#1A2D44; --danger:#F07A66; --sheet:#FFFFFF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151C; --surface:#18202A; --fg:#E7EDF4; --muted:#93A2B3; --line:#2A3542;
+  --accent:#5AA2EE; --accent-ink:#0B1622; --accent-soft:#1A2D44; --danger:#F07A66; --sheet:#FFFFFF; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:15px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 120px;display:flex;flex-direction:column;gap:18px}
+h1{font-size:22px;font-weight:800;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.lede{margin:4px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.field{display:flex;flex-direction:column;gap:4px;flex:1 1 180px;min-width:0}
+input[type=text],input[type=date]{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-height:44px}
+input:focus-visible,button:focus-visible,label.btn:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--fg)}
+.check input{width:20px;height:20px;accent-color:var(--accent)}
+.course{gap:10px}
+.course.off{opacity:.55}
+.chead{display:flex;gap:8px;align-items:center}
+.chead input[type=text]{flex:1;min-width:0;font-weight:700;background:transparent;border-color:transparent;padding-inline:6px}
+.chead input[type=text]:hover{border-color:var(--line)}
+.icon{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 15px var(--f-ui);cursor:pointer;flex:none}
+.icon:hover{color:var(--fg)}
+.icon.del:hover{color:var(--danger)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.thumb{position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:var(--bg);border:1px solid var(--line);max-width:100%}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .n{position:absolute;left:4px;top:4px;background:rgba(10,20,30,.7);color:#fff;font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;font-variant-numeric:tabular-nums}
+.thumb .tools{position:absolute;right:3px;bottom:3px;display:flex;gap:3px}
+.thumb .tools button{width:26px;height:26px;border:0;border-radius:6px;background:rgba(10,20,30,.72);color:#fff;font-size:13px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:10px;font:700 14px var(--f-ui);cursor:pointer;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft)}
+.btn{position:relative;overflow:hidden}
+.btn input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:60px}
+.btn.ghost{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+.previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.pv{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pv canvas{width:100%;height:auto;background:var(--sheet);border-radius:4px;box-shadow:0 1px 0 var(--line),0 6px 18px rgba(20,40,70,.12)}
+.pv .cap{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pv.empty canvas{opacity:.45}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
+.bar .in{max-width:760px;margin:0 auto;display:flex;gap:12px;align-items:center}
+.bar .status{flex:1;min-width:0;font-size:13px;color:var(--muted)}
+.primary{min-height:48px;padding:0 22px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);font:800 15px var(--f-ui);cursor:pointer}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+@media (prefers-reduced-motion:no-preference){.primary{transition:transform .1s}.primary:active{transform:scale(.98)}}
+body{margin:0}
+.share{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>교육사진 증빙 PDF</h1>
+    <p class="lede">과목마다 갤러리 사진을 넣으면 한 쪽에 2장씩, 제목과 교육일자가 들어간 증빙 양식으로 PDF를 만듭니다. 사진은 휴대폰 안에서만 처리되고 서버로 전송되지 않습니다.</p>
+    <p class="lede">사진이 없는 과목은 PDF에서 자동으로 빠집니다. 신청하신 과목에만 사진을 넣으세요.</p>
+  </header>
+
+  <section class="card">
+    <div class="row">
+      <div class="field"><span class="label">고객사명 (파일 이름에 사용)</span><input type="text" id="client" placeholder="예: (주)동양피엔이"></div>
+      <div class="field"><span class="label">교육일자</span><input type="date" id="date"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="perCourse"> 과목마다 교육일자를 따로 입력</label>
+  </section>
+
+  <div id="courses" style="display:flex;flex-direction:column;gap:12px"></div>
+  <button class="btn ghost" id="addCourse" type="button">+ 과목 추가</button>
+
+  <section class="card">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <span class="label">미리보기</span><span class="hint" id="pageCount"></span>
+    </div>
+    <div class="previews" id="previews"></div>
+  </section>
+</div>
+
+<div class="bar"><div class="in">
+  <div class="status" id="status">사진을 넣으면 PDF를 만들 수 있습니다.</div>
+  <button class="btn share" id="share" type="button">공유</button>
+  <button class="primary" id="make" type="button" disabled>PDF 저장</button>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+const DEFAULTS=["직장 내 장애인 인식개선 교육 사진","개인정보보호 교육 사진","직장 내 성희롱 예방 교육 사진","직장 내 괴롭힘 예방 교육 사진","근로자 안전보건 교육 사진"];
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let uid=0;
+const saved=store.get("eduPdf.v2")||{};
+const state={
+  client:saved.client||"",
+  date:new Date(Date.now()+9*3600e3).toISOString().slice(0,10),
+  perCourse:false,
+  courses:(saved.courses||DEFAULTS.map(t=>({title:t,on:true}))).map(c=>({id:++uid,title:c.title,on:c.on!==false,date:"",photos:[]}))
+};
+const $=s=>document.querySelector(s);
+const elC=$("#courses");
+$("#client").value=state.client; $("#date").value=state.date;
+
+function persist(){store.set("eduPdf.v2",{client:state.client,courses:state.courses.map(c=>({title:c.title,on:c.on}))})}
+function fmtDate(v){if(!v)return"";const[y,m,d]=v.split("-");return `${y}. ${+m}. ${+d}.`}
+function dateOf(c){return state.perCourse?(c.date||state.date):state.date}
+
+/* ---------- 사진 불러오기 (긴 변 2000px로 축소, EXIF 회전 반영) ---------- */
+async function loadPhoto(file){
+  let src=null,w=0,h=0;
+  if(window.createImageBitmap){try{src=await createImageBitmap(file,{imageOrientation:"from-image"});w=src.width;h=src.height}catch(e){src=null}}
+  if(!src){const u=URL.createObjectURL(file);
+    src=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error("decode"));i.src=u});
+    w=src.naturalWidth;h=src.naturalHeight;URL.revokeObjectURL(u)}
+  const max=2000,sc=Math.min(1,max/Math.max(w,h));
+  const cv=document.createElement("canvas");cv.width=Math.round(w*sc);cv.height=Math.round(h*sc);
+  cv.getContext("2d").drawImage(src,0,0,cv.width,cv.height);
+  if(src.close)src.close();
+  const t=document.createElement("canvas"),ts=Math.min(1,320/Math.max(cv.width,cv.height));
+  t.width=Math.round(cv.width*ts);t.height=Math.round(cv.height*ts);t.getContext("2d").drawImage(cv,0,0,t.width,t.height);
+  return {id:++uid,cv,thumb:t.toDataURL("image/jpeg",0.8)};
+}
+
+/* ---------- 과목 카드 ---------- */
+function renderCourses(){
+  elC.innerHTML="";
+  state.courses.forEach((c,ci)=>{
+    const s=document.createElement("section");s.className="card course"+(c.on?"":" off");
+    const n=c.photos.length,pages=Math.ceil(n/2);
+    s.innerHTML=`<div class="chead">
+      <input type="checkbox" class="on" ${c.on?"checked":""} aria-label="PDF에 포함" style="width:20px;height:20px;accent-color:var(--accent);flex:none">
+      <input type="text" class="ttl" id="ttl-${c.id}" aria-label="쪽 제목">
+      <button class="icon up" type="button" aria-label="위로" ${ci===0?"disabled":""}>↑</button>
+      <button class="icon del" type="button" aria-label="과목 삭제">✕</button></div>
+      ${state.perCourse?`<div class="field" style="flex:none"><span class="label">이 과목 교육일자</span><input type="date" class="cdate" id="cd-${c.id}"></div>`:""}
+      <div class="thumbs"></div>
+      <div class="row" style="align-items:center"><label class="btn">사진 넣기<input type="file" accept="image/*" multiple></label>
+      <span class="hint">${n?`사진 ${n}장 · ${pages}쪽`:"사진 없음 · PDF에서 빠짐"}</span></div>`;
+    s.querySelector(".ttl").value=c.title;
+    if(state.perCourse){const d=s.querySelector(".cdate");d.value=c.date||state.date;d.oninput=()=>{c.date=d.value;schedule()}}
+    s.querySelector(".ttl").oninput=e=>{c.title=e.target.value;persist();schedule()};
+    s.querySelector(".on").onchange=e=>{c.on=e.target.checked;s.classList.toggle("off",!c.on);persist();schedule()};
+    s.querySelector(".up").onclick=()=>{if(ci>0){[state.courses[ci-1],state.courses[ci]]=[state.courses[ci],state.courses[ci-1]];persist();renderCourses();schedule()}};
+    s.querySelector(".del").onclick=()=>{ if(c.photos.length&&!s.dataset.arm){s.dataset.arm=1;const b=s.querySelector(".del");b.textContent="삭제?";b.style.width="auto";b.style.padding="0 8px";setTimeout(()=>{if(s.isConnected){delete s.dataset.arm;b.textContent="✕";b.style.width="";b.style.padding=""}},3000);return}
+      state.courses.splice(ci,1);persist();renderCourses();schedule()};
+    s.querySelector("input[type=file]").onchange=async e=>{
+      const files=[...(e.target.files||[])];e.target.value="";
+      if(!files.length){setStatus("선택된 사진이 없습니다. 갤러리에서 사진을 고른 뒤 '완료'를 눌러주세요.");return}
+      setStatus(`사진 ${files.length}장 불러오는 중…`);
+      let fail=0;
+      for(const f of files){try{c.photos.push(await loadPhoto(f))}catch(err){fail++}}
+      renderCourses();schedule();
+      if(fail)setTimeout(()=>setStatus(`${fail}장은 열지 못했습니다. HEIF/HEIC 형식이면 카메라 설정에서 JPG로 바꾸거나 다른 사진으로 넣어주세요.`),300);
+    };
+    const tg=s.querySelector(".thumbs");
+    c.photos.forEach((p,pi)=>{
+      const t=document.createElement("div");t.className="thumb";
+      t.innerHTML=`<img alt="" src="${p.thumb}"><span class="n">${Math.floor(pi/2)+1}쪽 ${pi%2?"아래":"위"}</span>
+        <div class="tools"><button type="button" aria-label="앞으로">←</button><button type="button" aria-label="빼기">✕</button></div>`;
+      const[bl,bx]=t.querySelectorAll("button");
+      bl.onclick=()=>{if(pi>0){[c.photos[pi-1],c.photos[pi]]=[c.photos[pi],c.photos[pi-1]];renderCourses();schedule()}};
+      bx.onclick=()=>{c.photos.splice(pi,1);renderCourses();schedule()};
+      tg.appendChild(t);
+    });
+    elC.appendChild(s);
+  });
+}
+
+/* ---------- 쪽 그리기 (원본 양식 920×1300 기준 비율) ---------- */
+function drawPage(cv,W,title,dateText,photos,placeholder){
+  const H=Math.round(W*297/210),s=W/920,x=cv.getContext("2d");
+  cv.width=W;cv.height=H;
+  x.fillStyle="#fff";x.fillRect(0,0,W,H);
+  x.fillStyle="#111";x.textBaseline="alphabetic";
+  x.font=`800 ${36*s}px "Noto Sans KR",sans-serif`;x.textAlign="center";
+  let fs=36;while(x.measureText(title).width>840*s&&fs>20){fs-=1;x.font=`800 ${fs*s}px "Noto Sans KR",sans-serif`}
+  x.fillText(title,W/2,86*s);
+  x.textAlign="left";x.font=`700 ${22*s}px "Noto Sans KR",sans-serif`;
+  x.fillText("교육일자: "+dateText,46*s,163*s);
+  const bx=36*s,by=192*s,bw=854*s,bh=(H/s-192-24)*s,r=18*s;
+  x.beginPath();x.roundRect?x.roundRect(bx,by,bw,bh,r):x.rect(bx,by,bw,bh);
+  x.strokeStyle="#2C7BC9";x.lineWidth=Math.max(1,2*s);x.stroke();
+  const mid=by+bh/2;
+  x.save();x.setLineDash([3*s,3*s]);x.strokeStyle="#D3DEEA";x.lineWidth=Math.max(1,1*s);
+  x.beginPath();x.moveTo(54*s,mid);x.lineTo(870*s,mid);x.stroke();x.restore();
+  const slots=[[by+20*s,mid-20*s],[mid+20*s,by+bh-20*s]];
+  slots.forEach(([t,b],i)=>{
+    const maxW=660*s,maxH=Math.min(460*s,b-t-60*s),cy=(t+b)/2,p=photos[i];
+    if(p){const k=Math.min(maxW/p.cv.width,maxH/p.cv.height),w=p.cv.width*k,h=p.cv.height*k;
+      x.drawImage(p.cv,(W-w)/2,cy-h/2,w,h);}
+    else if(placeholder){const w=maxW,h=maxW*0.6>maxH?maxH:maxW*0.6;
+      x.save();x.setLineDash([8*s,6*s]);x.strokeStyle="#B9C6D4";x.lineWidth=Math.max(1,2*s);x.strokeRect((W-w)/2,cy-h/2,w,h);
+      x.fillStyle="#8494A6";x.font=`500 ${22*s}px "Noto Sans KR",sans-serif`;x.textAlign="center";x.fillText(`사진 ${i+1}`,W/2,cy+8*s);x.restore();}
+  });
+}
+function pagesPlan(withEmpty){
+  const out=[];
+  state.courses.forEach(c=>{
+    if(!c.on)return;
+    if(!c.photos.length){if(withEmpty)out.push({c,photos:[],empty:true});return}
+    for(let i=0;i<c.photos.length;i+=2)out.push({c,photos:c.photos.slice(i,i+2)});
+  });
+  return out;
+}
+
+/* 캔버스에 한글 웹폰트가 실제로 쓰이도록, 화면에 그릴 글자 묶음을 먼저 불러옴 */
+function fontsFor(){
+  if(!document.fonts||!document.fonts.load)return Promise.resolve();
+  const txt="교육일자: 0123456789. 사진"+state.courses.map(c=>c.title).join("");
+  return Promise.all(['800 36px "Noto Sans KR"','700 22px "Noto Sans KR"','500 22px "Noto Sans KR"'].map(f=>document.fonts.load(f,txt))).catch(()=>{});
+}
+/* ---------- 미리보기 ---------- */
+let tmr;function schedule(){clearTimeout(tmr);tmr=setTimeout(()=>fontsFor().then(renderPreview),150)}
+function renderPreview(){
+  const pv=$("#previews");pv.innerHTML="";
+  const plan=pagesPlan(true);let real=0;
+  plan.forEach(pg=>{
+    const w=document.createElement("div");w.className="pv"+(pg.empty?" empty":"");
+    const cv=document.createElement("canvas");
+    drawPage(cv,560,pg.c.title,fmtDate(dateOf(pg.c)),pg.photos,true);
+    const cap=document.createElement("div");cap.className="cap";
+    cap.textContent=pg.empty?"사진 없음 · PDF에서 빠짐":`${++real}쪽`;
+    w.append(cv,cap);pv.appendChild(w);
+  });
+  $("#pageCount").textContent=real?`PDF ${real}쪽`:"";
+  $("#make").disabled=!real||!window.jspdf;
+  $("#make").textContent=real?`PDF 저장 (${real}쪽)`:"PDF 저장";
+  setStatus(real?`파일 이름: ${fileName()}`:"사진을 넣으면 PDF를 만들 수 있습니다.");
+}
+function setStatus(t){$("#status").textContent=t}
+function fileName(){
+  const d=state.date||"";const ym=d?d.slice(0,4)+"_"+d.slice(5,7):"교육";
+  const cl=(state.client||"").trim().replace(/[\\/:*?"<>|]/g,"").replace(/\s+/g,"");
+  return `${ym}_교육사진${cl?"_"+cl:""}.pdf`;
+}
+
+/* ---------- PDF 만들기 ---------- */
+let lastFile=null;
+$("#make").onclick=async()=>{
+  const btn=$("#make");btn.disabled=true;
+  try{
+    await fontsFor();
+    const plan=pagesPlan(false);
+    const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:"mm",format:"a4",compress:true});
+    const cv=document.createElement("canvas");
+    for(let i=0;i<plan.length;i++){
+      setStatus(`${i+1} / ${plan.length}쪽 만드는 중…`);
+      await new Promise(r=>setTimeout(r,0));
+      drawPage(cv,1654,plan[i].c.title,fmtDate(dateOf(plan[i].c)),plan[i].photos,false);
+      if(i)doc.addPage();
+      doc.addImage(cv.toDataURL("image/jpeg",0.88),"JPEG",0,0,210,297,undefined,"FAST");
+    }
+    const blob=doc.output("blob"),name=fileName();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+    try{const f=new File([blob],name,{type:"application/pdf"});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){lastFile=f;$("#share").style.display="inline-flex"}}catch(e){}
+    setStatus(`저장했습니다 · ${name} (${(blob.size/1048576).toFixed(1)}MB) · 다운로드 폴더를 확인하세요`);
+  }catch(e){
+    setStatus("PDF를 만들지 못했습니다. 사진 수를 줄여 다시 시도해 주세요.");
+  }finally{btn.disabled=false}
+};
+$("#share").onclick=async()=>{
+  if(!lastFile)return;
+  try{await navigator.share({files:[lastFile],title:lastFile.name})}catch(e){}
+};
+
+/* ---------- 상단 입력 ---------- */
+$("#client").oninput=e=>{state.client=e.target.value;persist();schedule()};
+$("#date").oninput=e=>{state.date=e.target.value;schedule()};
+$("#perCourse").onchange=e=>{state.perCourse=e.target.checked;renderCourses();schedule()};
+$("#addCourse").onclick=()=>{state.courses.push({id:++uid,title:"교육 사진",on:true,date:"",photos:[]});persist();renderCourses();schedule();
+  setTimeout(()=>{const i=elC.lastElementChild?.querySelector(".ttl");if(i){i.focus();i.select()}},0)};
+
+renderCourses();renderPreview();
+fontsFor().then(renderPreview,renderPreview);
+})();
+</script>
+</body>
+</html>
